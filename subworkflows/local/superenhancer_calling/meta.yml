@@ -1,0 +1,43 @@
+name: superenhancer_calling
+description: Call super-enhancers from ChIP-seq data using ROSE2
+keywords:
+  - super-enhancers
+  - ROSE2
+  - ChIP-seq
+  - H3K27ac
+components:
+  - rose2
+  - samtools_index
+input:
+  - ch_samples:
+      type: channel
+      description: Channel containing sample information with peaks, BAM, and control BAM
+      pattern: "[ meta, peaks, bam, control_bam ]"
+  - ch_gtf:
+      type: file
+      description: GTF annotation file for TSS identification
+      pattern: "*.gtf"
+  - genome:
+      type: string
+      description: Genome assembly name (e.g., hg38, mm10)
+output:
+  - all_enhancers:
+      type: file
+      description: Table of all enhancers with H3K27ac signal
+      pattern: "*_AllEnhancers.table.txt"
+  - super_enhancers:
+      type: file
+      description: Table of super-enhancers identified by inflection point
+      pattern: "*_SuperEnhancers.table.txt"
+  - plots:
+      type: file
+      description: Plot showing enhancer ranking and SE cutoff
+      pattern: "*_Plot_points.png"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

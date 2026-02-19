@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/seia/master/nextflow_schema.json",
-    "title": "nf-core/seia pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/nf-core/enhancerflow/master/nextflow_schema.json",
+    "title": "nf-core/enhancerflow pipeline parameters",
     "description": "A nf-core pipeline for super-enhancer identification and annotation",
     "type": "object",
     "$defs": {
@@ -20,7 +20,18 @@
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.csv$",
                     "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/seia/usage#samplesheet-input).",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/enhancerflow/usage#samplesheet-input).",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "contrastsheet": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "schema": "assets/schema_contrastsheet.json",
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to comma-separated file defining differential analysis contrasts.",
+                    "help_text": "Optional. Specify contrasts for differential analysis. Format: contrast,case,control. Groups are defined as condition (or condition:timepoint if timepoint column exists in samplesheet).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {
@@ -79,6 +90,77 @@
                     "fa_icon": "fas fa-ban",
                     "hidden": true,
                     "default": "s3://ngi-igenomes/igenomes/"
+                },
+                "gtf": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "pattern": "^\\S+\\.gtf(\\.gz)?$",
+                    "description": "Path to GTF annotation file.",
+                    "help_text": "Required for TSS annotation in ROSE2 and rGREAT functional analysis.",
+                    "fa_icon": "far fa-file-code"
+                }
+            }
+        },
+        "super_enhancer_options": {
+            "title": "Super-Enhancer Calling Options",
+            "type": "object",
+            "fa_icon": "fas fa-dna",
+            "description": "Parameters for ROSE2 super-enhancer identification",
+            "properties": {
+                "stitch_distance": {
+                    "type": "integer",
+                    "default": 12500,
+                    "description": "Distance in bp to stitch nearby enhancers",
+                    "fa_icon": "fas fa-arrows-alt-h"
+                },
+                "tss_exclusion": {
+                    "type": "integer",
+                    "default": 2500,
+                    "description": "Distance in bp to exclude TSS regions",
+                    "fa_icon": "fas fa-ban"
+                },
+                "extension_length": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Extension length for stitching in bp",
+                    "fa_icon": "fas fa-ruler-horizontal"
+                }
+            }
+        },
+        "analysis_options": {
+            "title": "Analysis Options",
+            "type": "object",
+            "fa_icon": "fas fa-cogs",
+            "description": "Enable or disable specific analysis steps",
+            "properties": {
+                "skip_visualization": {
+                    "type": "boolean",
+                    "description": "Skip deepTools visualization"
+                },
+                "skip_motifs": {
+                    "type": "boolean",
+                    "description": "Skip HOMER motif analysis"
+                },
+                "skip_crc": {
+                    "type": "boolean",
+                    "description": "Skip Coltron CRC analysis"
+                },
+                "skip_great": {
+                    "type": "boolean",
+                    "description": "Skip rGREAT functional annotation"
+                },
+                "skip_comparison": {
+                    "type": "boolean",
+                    "description": "Skip cross-condition comparison analysis"
+                },
+                "overlap_fraction": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "Minimum reciprocal overlap fraction for intervene",
+                    "help_text": "Fraction of each super-enhancer that must overlap for intervene analysis (0.0-1.0)",
+                    "minimum": 0.0,
+                    "maximum": 1.0
                 }
             }
         },
@@ -246,6 +328,12 @@
         },
         {
             "$ref": "#/$defs/reference_genome_options"
+        },
+        {
+            "$ref": "#/$defs/super_enhancer_options"
+        },
+        {
+            "$ref": "#/$defs/analysis_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

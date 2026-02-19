@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/enhancerflow/master/assets/schema_contrastsheet.json",
+    "title": "nf-core/enhancerflow pipeline - params.contrastsheet schema",
+    "description": "Schema for the contrastsheet file defining differential analysis contrasts",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "contrast": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Contrast name must be provided and cannot contain spaces",
+                "meta": ["contrast_id"]
+            },
+            "case": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Case group must be provided and cannot contain spaces"
+            },
+            "control": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Control group must be provided and cannot contain spaces"
+            }
+        },
+        "required": ["contrast", "case", "control"]
+    }
+}

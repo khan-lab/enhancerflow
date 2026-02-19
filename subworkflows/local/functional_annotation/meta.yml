@@ -1,0 +1,38 @@
+name: functional_annotation
+description: Functional annotation of super-enhancers using rGREAT
+keywords:
+  - functional annotation
+  - gene ontology
+  - rGREAT
+  - super-enhancers
+components:
+  - rgreat
+input:
+  - ch_super_enhancers:
+      type: channel
+      description: Channel containing super-enhancer tables
+      pattern: "[ meta, super_enhancers ]"
+  - genome:
+      type: string
+      description: Genome assembly name (e.g., hg38, mm10)
+output:
+  - go_bp_results:
+      type: file
+      description: GO Biological Process enrichment results
+      pattern: "*_GO_BP_enrichment.tsv"
+  - go_mf_results:
+      type: file
+      description: GO Molecular Function enrichment results
+      pattern: "*_GO_MF_enrichment.tsv"
+  - go_cc_results:
+      type: file
+      description: GO Cellular Component enrichment results
+      pattern: "*_GO_CC_enrichment.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

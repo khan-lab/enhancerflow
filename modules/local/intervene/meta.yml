@@ -1,0 +1,79 @@
+name: intervene
+description: Set operations and visualizations of genomic region overlaps
+keywords:
+  - genomic intervals
+  - overlap
+  - venn diagram
+  - upset plot
+  - visualization
+tools:
+  - intervene:
+      description: Tool for intersection and visualization of multiple genomic region sets
+      homepage: https://intervene.readthedocs.io/
+      documentation: https://intervene.readthedocs.io/
+      tool_dev_url: https://github.com/asntech/intervene
+      doi: "10.1186/s12859-017-1708-7"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - beds:
+        type: file
+        description: List of BED files to compare
+        pattern: "*.{bed,bed.gz}"
+  - - overlap_fraction:
+        type: number
+        description: Minimum reciprocal overlap fraction (0.0-1.0)
+output:
+  - output_dir:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}/:
+            type: directory
+            description: Directory containing all intervene results
+  - venn:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}/Intervene_venn.pdf:
+            type: file
+            description: Venn diagram (only for ≤6 sets)
+            pattern: "*_venn.pdf"
+  - upset:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}/Intervene_upset.pdf:
+            type: file
+            description: UpSet plot showing all intersections
+            pattern: "*_upset.pdf"
+  - heatmap:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}/Intervene_pairwise.pdf:
+            type: file
+            description: Pairwise intersection heatmap
+            pattern: "*_pairwise.pdf"
+  - versions:
+      - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

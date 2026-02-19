@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/seia/master/assets/schema_input.json",
-    "title": "nf-core/seia pipeline - params.input schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/enhancerflow/master/assets/schema_input.json",
+    "title": "nf-core/enhancerflow pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {
@@ -13,21 +13,40 @@
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
-            "fastq_1": {
+            "peaks": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^.*\\.(narrowPeak|bed)(\\.gz)?$",
+                "errorMessage": "Peaks file must be in narrowPeak or BED format"
             },
-            "fastq_2": {
+            "bam": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^.*\\.bam$",
+                "errorMessage": "BAM file must have .bam extension"
+            },
+            "control_bam": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^.*\\.bam$",
+                "errorMessage": "Control BAM must have .bam extension"
+            },
+            "condition": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Condition must not contain spaces",
+                "meta": ["condition"]
+            },
+            "timepoint": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Timepoint must not contain spaces",
+                "meta": ["timepoint"]
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["sample", "peaks", "bam"]
     }
 }

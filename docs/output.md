@@ -1,4 +1,4 @@
-# nf-core/seia: Output
+# nf-core/enhancerflow: Output
 
 ## Introduction
 

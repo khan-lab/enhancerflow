@@ -1,0 +1,90 @@
+name: comparison
+description: Cross-condition comparison of super-enhancers using intervene and deepTools
+keywords:
+  - super-enhancers
+  - comparison
+  - intervene
+  - deeptools
+  - venn diagram
+  - upset plot
+  - correlation
+components:
+  - intervene
+  - deeptools_multibigwigsummary
+  - deeptools_plotcorrelation
+  - deeptools_computematrix
+  - deeptools_plotprofile
+  - deeptools_plotheatmap
+  - bedtools_sort
+  - bedtools_merge
+input:
+  - ch_super_enhancers:
+      type: channel
+      description: Channel containing super-enhancer BED files with condition metadata
+      pattern: "[ meta, bed ]"
+  - ch_bigwigs:
+      type: channel
+      description: Channel containing bigWig files with condition metadata
+      pattern: "[ meta, bigwig ]"
+  - overlap_fraction:
+      type: number
+      description: Minimum reciprocal overlap fraction for intervene (0.0-1.0)
+output:
+  - individual_overlap:
+      type: directory
+      description: Intervene output directory for individual sample comparison
+  - individual_venn:
+      type: file
+      description: Venn diagram of individual samples
+      pattern: "*_venn.pdf"
+  - individual_upset:
+      type: file
+      description: UpSet plot of individual samples
+      pattern: "*_upset.pdf"
+  - individual_heatmap:
+      type: file
+      description: Pairwise heatmap of individual samples
+      pattern: "*_pairwise.pdf"
+  - condition_overlap:
+      type: directory
+      description: Intervene output directory for condition-level comparison
+  - condition_venn:
+      type: file
+      description: Venn diagram of conditions
+      pattern: "*_venn.pdf"
+  - condition_upset:
+      type: file
+      description: UpSet plot of conditions
+      pattern: "*_upset.pdf"
+  - condition_heatmap:
+      type: file
+      description: Pairwise heatmap of conditions
+      pattern: "*_pairwise.pdf"
+  - merged_ses:
+      type: file
+      description: Merged super-enhancers per condition
+      pattern: "*.bed"
+  - correlation_matrix:
+      type: file
+      description: deepTools multiBigwigSummary matrix
+      pattern: "*.npz"
+  - correlation_heatmap:
+      type: file
+      description: Sample correlation heatmap
+      pattern: "*.pdf"
+  - multi_heatmap:
+      type: file
+      description: Multi-sample signal heatmap at super-enhancers
+      pattern: "*.pdf"
+  - multi_profile:
+      type: file
+      description: Multi-sample signal profile plot at super-enhancers
+      pattern: "*.pdf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

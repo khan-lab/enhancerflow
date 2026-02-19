@@ -1,0 +1,49 @@
+name: crc_analysis
+description: Identify core regulatory circuitry using Coltron
+keywords:
+  - core regulatory circuitry
+  - transcription factors
+  - coltron
+  - gene regulatory networks
+components:
+  - coltron
+input:
+  - ch_enhancers:
+      type: channel
+      description: Channel containing all enhancers tables
+      pattern: "[ meta, all_enhancers ]"
+  - ch_constituents:
+      type: channel
+      description: Channel containing constituent peak BED files
+      pattern: "[ meta, constituent_bed ]"
+  - ch_fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+  - genome:
+      type: string
+      description: Genome assembly name
+output:
+  - output_dir:
+      type: directory
+      description: Directory containing all Coltron results
+  - clique_scores:
+      type: file
+      description: Clique scores for core TFs
+      pattern: "*_CLIQUE_SCORES*.txt"
+  - degree_table:
+      type: file
+      description: TF in/out degree table
+      pattern: "*_DEGREE_TABLE.txt"
+  - edge_list:
+      type: file
+      description: TF-TF interaction edge list
+      pattern: "*_EDGE_LIST.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

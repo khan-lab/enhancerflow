@@ -1,0 +1,9 @@
+name: rgreat
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base>=4.0
+  - bioconductor-rgreat=2.4.0
+  - bioconductor-genomicranges

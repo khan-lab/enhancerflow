@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/seia
+    nf-core/enhancerflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/seia
-    Website: https://nf-co.re/seia
-    Slack  : https://nfcore.slack.com/channels/seia
+    Github : https://github.com/nf-core/enhancerflow
+    Website: https://nf-co.re/enhancerflow
+    Slack  : https://nfcore.slack.com/channels/enhancerflow
 ----------------------------------------------------------------------------------------
 */
 
@@ -15,10 +15,10 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { SEIA  } from './workflows/seia'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_seia_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_seia_pipeline'
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_seia_pipeline'
+include { ENHANCERFLOW  } from './workflows/enhancerflow'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_enhancerflow_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_enhancerflow_pipeline'
+include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_enhancerflow_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,10 +26,12 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_seia
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
+// Fetch genome files from iGenomes config using --genome parameter
 params.fasta = getGenomeAttribute('fasta')
+params.fai = getGenomeAttribute('fai')
+params.gtf   = getGenomeAttribute('gtf')
+params.gene_bed      = getGenomeAttribute('gene_bed')
+params.blacklist     = getGenomeAttribute('blacklist')
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,21 +42,23 @@ params.fasta = getGenomeAttribute('fasta')
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow NFCORE_SEIA {
+workflow NFCORE_ENHANCERFLOW {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    samplesheet   // channel: samplesheet read in from --input
+    contrastsheet // channel: contrastsheet for differential analysis (optional)
 
     main:
 
     //
     // WORKFLOW: Run pipeline
     //
-    SEIA (
-        samplesheet
+    ENHANCERFLOW (
+        samplesheet,
+        contrastsheet
     )
     emit:
-    multiqc_report = SEIA.out.multiqc_report // channel: /path/to/multiqc_report.html
+    multiqc_report = ENHANCERFLOW.out.multiqc_report // channel: /path/to/multiqc_report.html
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,6 +79,7 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.contrastsheet,
         params.help,
         params.help_full,
         params.show_hidden
@@ -83,8 +88,9 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_SEIA (
-        PIPELINE_INITIALISATION.out.samplesheet
+    NFCORE_ENHANCERFLOW (
+        PIPELINE_INITIALISATION.out.samplesheet,
+        PIPELINE_INITIALISATION.out.contrastsheet
     )
     //
     // SUBWORKFLOW: Run completion tasks
@@ -96,7 +102,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_SEIA.out.multiqc_report
+        NFCORE_ENHANCERFLOW.out.multiqc_report
     )
 }
 

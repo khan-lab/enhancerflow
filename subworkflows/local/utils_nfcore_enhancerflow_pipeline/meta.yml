@@ -1,0 +1,43 @@
+name: utils_nfcore_enhancerflow_pipeline
+description: Utility subworkflow for nf-core/enhancerflow pipeline initialization and completion
+keywords:
+  - utility
+  - pipeline
+  - initialization
+  - completion
+components:
+  - utils_nfschema_plugin
+  - utils_nfcore_pipeline
+  - utils_nextflow_pipeline
+input:
+  - version:
+      type: boolean
+      description: Display version and exit
+  - validate_params:
+      type: boolean
+      description: Validate parameters against schema
+  - monochrome_logs:
+      type: boolean
+      description: Disable colored log outputs
+  - nextflow_cli_args:
+      type: array
+      description: Nextflow CLI arguments
+  - outdir:
+      type: string
+      description: Output directory path
+  - input:
+      type: string
+      description: Input samplesheet path
+output:
+  - samplesheet:
+      type: channel
+      description: Validated samplesheet channel
+      pattern: "[ meta, peaks, bam, control_bam ]"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

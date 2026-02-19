@@ -1,0 +1,46 @@
+name: visualization
+description: Visualize super-enhancer signal using deepTools
+keywords:
+  - visualization
+  - deeptools
+  - heatmap
+  - bigwig
+components:
+  - deeptools_bamcoverage
+  - deeptools_computematrix
+  - deeptools_plotprofile
+  - deeptools_plotheatmap
+input:
+  - ch_bams:
+      type: channel
+      description: Channel containing BAM files with indices
+      pattern: "[ meta, bam, bai ]"
+  - ch_super_enhancers:
+      type: channel
+      description: Channel containing super-enhancer BED files
+      pattern: "[ meta, bed ]"
+output:
+  - bigwigs:
+      type: file
+      description: BigWig coverage files
+      pattern: "*.bigWig"
+  - matrices:
+      type: file
+      description: Computed signal matrices
+      pattern: "*.mat.gz"
+  - profiles:
+      type: file
+      description: Profile plot PDFs
+      pattern: "*_profile.pdf"
+  - heatmaps:
+      type: file
+      description: Heatmap PDFs
+      pattern: "*_heatmap.pdf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

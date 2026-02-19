@@ -1,0 +1,52 @@
+name: motif_analysis
+description: Perform motif analysis on super-enhancer constituent peaks using HOMER
+keywords:
+  - motif discovery
+  - HOMER
+  - transcription factors
+  - super-enhancers
+components:
+  - extract_constituents
+  - homer_findmotifsgenome
+  - homer_annotatepeaks
+input:
+  - ch_super_enhancers:
+      type: channel
+      description: Channel containing super-enhancer tables
+      pattern: "[ meta, super_enhancers ]"
+  - ch_peaks:
+      type: channel
+      description: Channel containing original peak files
+      pattern: "[ meta, peaks ]"
+  - ch_fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+  - ch_gtf:
+      type: file
+      description: GTF annotation file
+      pattern: "*.gtf"
+  - genome:
+      type: string
+      description: Genome assembly name
+output:
+  - constituents:
+      type: file
+      description: BED file of constituent peaks within super-enhancers
+      pattern: "*_constituent_peaks.bed"
+  - motifs:
+      type: directory
+      description: Directory containing HOMER motif results
+      pattern: "motifs/"
+  - annotations:
+      type: file
+      description: Annotated super-enhancers
+      pattern: "*_annotated.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

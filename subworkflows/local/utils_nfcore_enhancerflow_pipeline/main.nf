@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the nf-core/seia pipeline
+// Subworkflow with functionality specific to the nf-core/enhancerflow pipeline
 //
 
 /*
@@ -33,6 +33,7 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    contrastsheet     //  string: Path to contrastsheet (optional)
     help              // boolean: Display help message and exit
     help_full         // boolean: Show the full help message
     show_hidden       // boolean: Show hidden parameters in the help message
@@ -61,7 +62,7 @@ workflow PIPELINE_INITIALISATION {
 \033[0;34m  |\\ | |__  __ /  ` /  \\ |__) |__         \033[0;33m}  {\033[0m
 \033[0;34m  | \\| |       \\__, \\__/ |  \\ |___     \033[0;32m\\`-._,-`-,\033[0m
                                         \033[0;32m`._,._,\'\033[0m
-\033[0;35m  nf-core/seia ${workflow.manifest.version}\033[0m
+\033[0;35m  nf-core/enhancerflow ${workflow.manifest.version}\033[0m
 -\033[2m----------------------------------------------------\033[0m-
 """
     after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/','')}"}.join("\n")}${workflow.manifest.doi ? "\n" : ""}
@@ -69,7 +70,7 @@ workflow PIPELINE_INITIALISATION {
     https://doi.org/10.1038/s41587-020-0439-x
 
 * Software dependencies
-    https://github.com/nf-core/seia/blob/master/CITATIONS.md
+    https://github.com/nf-core/enhancerflow/blob/master/CITATIONS.md
 """
     command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
 
@@ -104,26 +105,43 @@ workflow PIPELINE_INITIALISATION {
     channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
         .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
+            meta, peaks, bam, control_bam ->
+                def meta_clone = meta.clone()
+                def control = control_bam ?: []
+                return [ meta_clone, peaks, bam, control ]
         }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
+        .view { meta, peaks, bam, control ->
+            if (params.debug_meta) {
+                return """
+                ╔═══════════════════════════════════════════════════════════════════════════════
+                ║ Sample Metadata Debug (--debug_meta)
+                ╠═══════════════════════════════════════════════════════════════════════════════
+                ║ meta.id:        ${meta.id}
+                ║ meta.condition: ${meta.condition ?: 'NOT SET'}
+                ║ meta.timepoint: ${meta.timepoint ?: 'NOT SET'}
+                ║ peaks:          ${peaks}
+                ║ bam:            ${bam}
+                ║ control_bam:    ${control ?: 'NOT PROVIDED'}
+                ╚═══════════════════════════════════════════════════════════════════════════════
+                """.stripIndent()
+            }
         }
         .set { ch_samplesheet }
 
+    // Parse contrastsheet if provided
+    ch_contrastsheet = Channel.empty()
+    if (contrastsheet) {
+        PARSE_CONTRASTSHEET(
+            contrastsheet,
+            ch_samplesheet
+        )
+        ch_contrastsheet = PARSE_CONTRASTSHEET.out.contrasts
+    }
+
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    samplesheet   = ch_samplesheet
+    contrastsheet = ch_contrastsheet
+    versions      = ch_versions
 }
 
 /*
@@ -190,15 +208,10 @@ def validateInputParameters() {
 // Validate channels from input samplesheet
 //
 def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
-
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
-    }
-
-    return [ metas[0], fastqs ]
+    // Basic validation for ChIP-seq inputs
+    // This function can be extended with additional validation logic
+    // For now, the nf-schema plugin handles most validation
+    return input
 }
 //
 // Get attribute from genome config file e.g. fasta
@@ -289,4 +302,95 @@ def methodsDescriptionText(mqc_methods_yaml) {
     def description_html = engine.createTemplate(methods_text).make(meta)
 
     return description_html.toString()
+}
+
+//
+// Generate group_id from meta based on condition and timepoint
+//
+def getGroupId(meta) {
+    if (meta.timepoint != null && meta.timepoint != "") {
+        return "${meta.condition}:${meta.timepoint}"
+    } else if (meta.condition != null) {
+        return meta.condition
+    } else {
+        return meta.id
+    }
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW: Parse and validate contrastsheet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+workflow PARSE_CONTRASTSHEET {
+
+    take:
+    contrastsheet_file  // path: contrastsheet CSV file
+    ch_samples          // channel: [ meta, peaks, bam, control_bam ]
+
+    main:
+
+    // Read and validate contrastsheet structure
+    ch_contrasts_raw = Channel
+        .fromList(samplesheetToList(contrastsheet_file, "${projectDir}/assets/schema_contrastsheet.json"))
+        .map { meta, case_group, control_group ->
+            [meta.contrast_id, case_group, control_group]
+        }
+
+    // Create group_id mapping from samples
+    ch_sample_groups = ch_samples
+        .map { meta, peaks, bam, control ->
+            def group_id = getGroupId(meta)
+            [group_id, meta.id, meta, peaks, bam, control]
+        }
+        .groupTuple(by: 0)
+        .map { group_id, sample_ids, metas, peaks_list, bam_list, control_list ->
+            [group_id, sample_ids, metas[0], peaks_list, bam_list, control_list]
+        }
+
+    // Get list of all available groups for validation
+    ch_available_groups = ch_sample_groups
+        .map { group_id, sample_ids, meta, peaks, bams, controls -> group_id }
+        .collect()
+
+    // Validate contrasts against available groups
+    ch_validated_contrasts = ch_contrasts_raw
+        .combine(ch_available_groups)
+        .map { contrast_id, case_group, control_group, all_groups ->
+            if (!all_groups.contains(case_group)) {
+                error("Contrast '${contrast_id}': Case group '${case_group}' not found in samplesheet. Available groups: ${all_groups.join(', ')}")
+            }
+            if (!all_groups.contains(control_group)) {
+                error("Contrast '${contrast_id}': Control group '${control_group}' not found in samplesheet. Available groups: ${all_groups.join(', ')}")
+            }
+            [contrast_id, case_group, control_group]
+        }
+
+    // Join contrasts with their sample information
+    ch_contrast_data = ch_validated_contrasts
+        .combine(ch_sample_groups)
+        .filter { contrast_id, case_group, control_group, group_id, sample_ids, meta, peaks, bams, controls ->
+            group_id == case_group
+        }
+        .map { contrast_id, case_group, control_group, case_group_id, case_sample_ids, case_meta, case_peaks, case_bams, case_controls ->
+            [contrast_id, case_group, control_group, case_sample_ids, case_peaks, case_bams]
+        }
+        .combine(ch_sample_groups)
+        .filter { contrast_id, case_group, control_group, case_sample_ids, case_peaks, case_bams, group_id, sample_ids, meta, peaks, bams, controls ->
+            group_id == control_group
+        }
+        .map { contrast_id, case_group, control_group, case_sample_ids, case_peaks, case_bams, control_group_id, control_sample_ids, control_meta, control_peaks, control_bams, control_controls ->
+            def meta = [
+                id: contrast_id,
+                contrast_id: contrast_id,
+                case_group: case_group,
+                control_group: control_group
+            ]
+            [meta, case_sample_ids, control_sample_ids]
+        }
+
+    emit:
+    contrasts = ch_contrast_data       // channel: [ meta(id, contrast_id, case_group, control_group), case_sample_ids, control_sample_ids ]
+    groups    = ch_sample_groups       // channel: [ group_id, sample_ids, meta, peaks, bams, controls ]
 }

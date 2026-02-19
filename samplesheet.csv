@@ -1,0 +1,7 @@
+sample,condition,timepoint,bam,peaks,control_bam
+WT_T0_r1,WT,T0,data/WT_T0_r1.bam,data/WT_T0_r1.narrowPeak,data/INPUT_shared.bam
+WT_T0_r2,WT,T0,data/WT_T0_r2.bam,data/WT_T0_r2.narrowPeak,data/INPUT_shared.bam
+WT_T1_r1,WT,T1,data/WT_T1_r1.bam,data/WT_T1_r1.narrowPeak,data/INPUT_shared.bam
+KO_T0_r1,KO,T0,data/KO_T0_r1.bam,data/KO_T0_r1.narrowPeak,data/INPUT_shared.bam
+KO_T0_r2,KO,T0,data/KO_T0_r2.bam,data/KO_T0_r2.narrowPeak,data/INPUT_shared.bam
+KO_T1_r1,KO,T1,data/KO_T1_r1.bam,data/KO_T1_r1.narrowPeak,data/INPUT_shared.bam

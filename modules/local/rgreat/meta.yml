@@ -1,0 +1,67 @@
+name: rgreat
+description: Functional annotation of genomic regions using rGREAT
+keywords:
+  - functional annotation
+  - gene ontology
+  - genomic regions
+  - enrichment analysis
+tools:
+  - rgreat:
+      description: Client for GREAT (Genomic Regions Enrichment of Annotations Tool)
+      homepage: https://bioconductor.org/packages/rGREAT
+      documentation: https://bioconductor.org/packages/release/bioc/html/rGREAT.html
+      tool_dev_url: https://github.com/jokergoo/rGREAT
+      doi: "10.1093/nar/gkac745"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - super_enhancers:
+        type: file
+        description: ROSE2 super-enhancers table
+        pattern: "*_SuperEnhancers.table.txt"
+  - genome:
+      type: string
+      description: Genome assembly name (e.g., hg38, hg19, mm10, mm9)
+
+output:
+  - go_bp_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_GO_BP_enrichment.tsv":
+          type: file
+          description: GO Biological Process enrichment results
+          pattern: "*_GO_BP_enrichment.tsv"
+  - go_mf_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_GO_MF_enrichment.tsv":
+          type: file
+          description: GO Molecular Function enrichment results
+          pattern: "*_GO_MF_enrichment.tsv"
+  - go_cc_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_GO_CC_enrichment.tsv":
+          type: file
+          description: GO Cellular Component enrichment results
+          pattern: "*_GO_CC_enrichment.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

@@ -1,0 +1,10 @@
+name: rose2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.6
+  - samtools=1.9
+  - bedtools=2.30
+  - numpy=1.16

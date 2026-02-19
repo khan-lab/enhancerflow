@@ -1,0 +1,88 @@
+name: rose2
+description: Identify super-enhancers from ChIP-seq data using ROSE2 algorithm
+keywords:
+  - epigenetics
+  - enhancers
+  - super-enhancers
+  - chip-seq
+  - H3K27ac
+tools:
+  - rose2:
+      description: Rank Ordering of Super-Enhancers
+      homepage: https://github.com/younglab/ROSE
+      documentation: https://github.com/younglab/ROSE
+      tool_dev_url: https://github.com/younglab/ROSE
+      licence: ["GPL v2"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - peaks:
+        type: file
+        description: Peak file in narrowPeak or BED format from H3K27ac ChIP-seq
+        pattern: "*.{narrowPeak,bed}"
+    - bam:
+        type: file
+        description: Sorted and indexed BAM file for H3K27ac signal
+        pattern: "*.bam"
+    - bam_index:
+        type: file
+        description: BAM index file
+        pattern: "*.bam.bai"
+    - control_bam:
+        type: file
+        description: Control BAM file (optional)
+        pattern: "*.bam"
+    - control_index:
+        type: file
+        description: Control BAM index file (optional)
+        pattern: "*.bam.bai"
+  - gtf:
+      type: file
+      description: GTF annotation file for TSS identification
+      pattern: "*.gtf"
+  - genome:
+      type: string
+      description: Genome assembly name (e.g., hg38, mm10)
+
+output:
+  - all_enhancers:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*/*_AllEnhancers.table.txt":
+          type: file
+          description: Table of all enhancers with H3K27ac signal
+          pattern: "*_AllEnhancers.table.txt"
+  - super_enhancers:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*/*_SuperEnhancers.table.txt":
+          type: file
+          description: Table of super-enhancers identified by inflection point
+          pattern: "*_SuperEnhancers.table.txt"
+  - plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*/*_Plot_points.png":
+          type: file
+          description: Plot showing enhancer ranking and SE cutoff
+          pattern: "*_Plot_points.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

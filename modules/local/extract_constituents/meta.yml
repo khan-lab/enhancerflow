@@ -1,0 +1,47 @@
+name: extract_constituents
+description: Extract individual constituent peaks within super-enhancers
+keywords:
+  - super-enhancers
+  - peaks
+  - genomics
+tools:
+  - python:
+      description: Python programming language
+      homepage: https://www.python.org/
+      documentation: https://docs.python.org/3/
+      licence: ["PSF"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - super_enhancers:
+        type: file
+        description: ROSE2 super-enhancers table
+        pattern: "*_SuperEnhancers.table.txt"
+    - peaks:
+        type: file
+        description: Original peak file
+        pattern: "*.{narrowPeak,bed}"
+
+output:
+  - constituents:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_constituent_peaks.bed":
+          type: file
+          description: BED file of peaks within super-enhancers
+          pattern: "*_constituent_peaks.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

@@ -1,0 +1,41 @@
+name: generate_design_summary
+description: Generate design summary table for differential analysis contrasts
+keywords:
+  - design
+  - contrasts
+  - differential analysis
+  - summary
+tools:
+  - bash:
+      description: GNU Bourne Again SHell
+      homepage: https://www.gnu.org/software/bash/
+      documentation: https://www.gnu.org/software/bash/manual/
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast metadata
+          e.g. [ id:'treated_vs_control', contrast_id:'treated_vs_control', case_group:'treated', control_group:'control' ]
+    - case_sample_ids:
+        type: array
+        description: List of sample IDs in the case group
+    - control_sample_ids:
+        type: array
+        description: List of sample IDs in the control group
+output:
+  - summary:
+      - ${prefix}_design_summary.tsv:
+            type: file
+            description: TSV file with design summary
+            pattern: "*_design_summary.tsv"
+  - versions:
+      - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

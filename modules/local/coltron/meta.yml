@@ -1,0 +1,83 @@
+name: coltron
+description: Core regulatory circuitry analysis using Coltron
+keywords:
+  - transcription factors
+  - core regulatory circuitry
+  - super-enhancers
+  - gene regulatory networks
+tools:
+  - coltron:
+      description: Core regulatory circuitry analysis tool
+      homepage: https://github.com/linlabcode/CRC
+      documentation: https://github.com/linlabcode/CRC
+      tool_dev_url: https://github.com/linlabcode/CRC
+      doi: "10.1016/j.cell.2018.04.033"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - enhancer_table:
+        type: file
+        description: ROSE2 all enhancers table
+        pattern: "*_AllEnhancers.table.txt"
+    - subpeak_bed:
+        type: file
+        description: Constituent peaks BED file
+        pattern: "*.bed"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+  - genome:
+      type: string
+      description: Genome assembly name (e.g., hg38, mm10)
+
+output:
+  - output_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "${prefix}/":
+          type: directory
+          description: Directory containing all Coltron CRC analysis results
+  - clique_scores:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "${prefix}/*_CLIQUE_SCORES*.txt":
+          type: file
+          description: Clique scores for core TFs
+          pattern: "*_CLIQUE_SCORES*.txt"
+  - degree_table:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "${prefix}/*_DEGREE_TABLE.txt":
+          type: file
+          description: TF in/out degree table
+          pattern: "*_DEGREE_TABLE.txt"
+  - edge_list:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "${prefix}/*_EDGE_LIST.txt":
+          type: file
+          description: TF-TF interaction edge list
+          pattern: "*_EDGE_LIST.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"
