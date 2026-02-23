@@ -3,10 +3,9 @@ process RGREAT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-rgreat:2.4.0--r43hdfd78af_0' :
-        'ghcr.io/khan-lab/rgreat:sha-0893d90' }"
 
+    container 'ghcr.io/khan-lab/rgreat:sha-0893d90'
+    
     input:
     tuple val(meta), path(super_enhancers)
     val genome

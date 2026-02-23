@@ -3,9 +3,8 @@ process ROSE2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rose2:1.0--py27h516909a_0' :
-        'ghcr.io/khan-lab/rose:2.0.1'}"
+    
+    container 'ghcr.io/khan-lab/rose:2.0.1'
 
     input:
     tuple val(meta), path(peaks), path(bam), path(bam_index), path(control_bam), path(control_index)
