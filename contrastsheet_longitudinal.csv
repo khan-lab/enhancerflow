@@ -1,0 +1,4 @@
+contrast,case,control
+WT_T1_vs_T0,WT:T1,WT:T0
+KO_T1_vs_T0,KO:T1,KO:T0
+KO_T0_vs_WT_T0,KO:T0,WT:T0

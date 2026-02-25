@@ -27,11 +27,13 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_enha
 */
 
 // Fetch genome files from iGenomes config using --genome parameter
-params.fasta = getGenomeAttribute('fasta')
-params.fai = getGenomeAttribute('fai')
-params.gtf   = getGenomeAttribute('gtf')
-params.gene_bed      = getGenomeAttribute('gene_bed')
-params.blacklist     = getGenomeAttribute('blacklist')
+// Only override if not already set via CLI (e.g. --fasta, --gtf)
+params.fasta         = params.fasta     ?: getGenomeAttribute('fasta')
+params.fai           = params.fai       ?: getGenomeAttribute('fai')
+params.gtf           = params.gtf       ?: getGenomeAttribute('gtf')
+params.gene_bed      = params.gene_bed  ?: getGenomeAttribute('gene_bed')
+params.blacklist     = params.blacklist ?: getGenomeAttribute('blacklist')
+params.motif_db      = "https://jaspar.elixir.no/download/data/2026/CORE/JASPAR2026_CORE_non-redundant_pfms_meme.txt"
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

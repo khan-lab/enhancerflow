@@ -99,6 +99,13 @@
                     "description": "Path to GTF annotation file.",
                     "help_text": "Required for TSS annotation in ROSE2 and rGREAT functional analysis.",
                     "fa_icon": "far fa-file-code"
+                },
+                "motif_db": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to motif database file in MEME format for FIMO and SEA analysis.",
+                    "help_text": "When not specified, uses the JASPAR 2022 CORE non-redundant database built into the MEME Docker container. Override with a custom .meme file path on the host.",
+                    "fa_icon": "fas fa-database"
                 }
             }
         },

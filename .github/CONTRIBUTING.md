@@ -1,23 +1,23 @@
-# `nf-core/seia`: Contributing Guidelines
+# `nf-core/enhancerflow`: Contributing Guidelines
 
 Hi there!
-Many thanks for taking an interest in improving nf-core/seia.
+Many thanks for taking an interest in improving nf-core/enhancerflow.
 
-We try to manage the required tasks for nf-core/seia using GitHub issues, you probably came to this page when creating one.
+We try to manage the required tasks for nf-core/enhancerflow using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
 Contributions to the code are even more welcome ;)
 
 > [!NOTE]
-> If you need help using or modifying nf-core/seia then the best place to ask is on the nf-core Slack [#seia](https://nfcore.slack.com/channels/seia) channel ([join our Slack here](https://nf-co.re/join/slack)).
+> If you need help using or modifying nf-core/enhancerflow then the best place to ask is on the nf-core Slack [#enhancerflow](https://nfcore.slack.com/channels/enhancerflow) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Contribution workflow
 
-If you'd like to write some code for nf-core/seia, the standard workflow is as follows:
+If you'd like to write some code for nf-core/enhancerflow, the standard workflow is as follows:
 
-1. Check that there isn't already an issue about your idea in the [nf-core/seia issues](https://github.com/nf-core/seia/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
-2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/seia repository](https://github.com/nf-core/seia) to your GitHub account
+1. Check that there isn't already an issue about your idea in the [nf-core/enhancerflow issues](https://github.com/nf-core/enhancerflow/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
+2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/enhancerflow repository](https://github.com/nf-core/enhancerflow) to your GitHub account
 3. Make the necessary changes / additions within your forked repository following [Pipeline conventions](#pipeline-contribution-conventions)
 4. Use `nf-core pipelines schema build` and add any new parameters to the pipeline JSON schema (requires [nf-core tools](https://github.com/nf-core/tools) >= 1.10).
 5. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
@@ -61,11 +61,11 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Getting help
 
-For further information/help, please consult the [nf-core/seia documentation](https://nf-co.re/seia/usage) and don't hesitate to get in touch on the nf-core Slack [#seia](https://nfcore.slack.com/channels/seia) channel ([join our Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the [nf-core/enhancerflow documentation](https://nf-co.re/enhancerflow/usage) and don't hesitate to get in touch on the nf-core Slack [#enhancerflow](https://nfcore.slack.com/channels/enhancerflow) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Pipeline contribution conventions
 
-To make the `nf-core/seia` code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the `nf-core/enhancerflow` code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 
@@ -115,7 +115,7 @@ This repo includes a devcontainer configuration which will create a GitHub Codes
 
 To get started:
 
-- Open the repo in [Codespaces](https://github.com/nf-core/seia/codespaces)
+- Open the repo in [Codespaces](https://github.com/nf-core/enhancerflow/codespaces)
 - Tools installed
   - nf-core
   - Nextflow

@@ -1,4 +1,4 @@
-# nf-core/seia: Citations
+# nf-core/enhancerflow: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 

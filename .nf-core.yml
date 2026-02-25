@@ -9,7 +9,7 @@ template:
   name: enhancerflow
   description: A nf-core pipeline for super-enhancer identification and annotation
   author: "@asntech"
-  version: 1.0.0dev
+  version: 1.1.0dev
   force: true
   outdir: .
   is_nfcore: true

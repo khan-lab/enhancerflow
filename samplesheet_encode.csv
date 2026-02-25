@@ -1,0 +1,2 @@
+sample,condition,timepoint,bam,peaks,control_bam
+ENCFF493UFO,WT,T1,encode-data/ENCFF338XRR.bam,encode-data/ENCFF493UFO.bed,encode-data/ENCFF657NDS.bam

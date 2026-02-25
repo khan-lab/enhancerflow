@@ -1,0 +1,50 @@
+name: bedtools_getfasta
+description: Extract FASTA sequences from BED regions using bedtools getfasta
+keywords:
+  - bedtools
+  - getfasta
+  - fasta
+  - sequence extraction
+tools:
+  - bedtools:
+      description: A powerful toolset for genome arithmetic
+      homepage: https://bedtools.readthedocs.io/
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/getfasta.html
+      tool_dev_url: https://github.com/arq5x/bedtools2
+      doi: "10.1093/bioinformatics/btq033"
+      licence: ["MIT"]
+      identifier: biotools:bedtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bed:
+        type: file
+        description: BED file defining regions to extract
+        pattern: "*.bed"
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta}"
+output:
+  - fasta:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}.fa:
+            type: file
+            description: FASTA file with extracted sequences
+            pattern: "*.fa"
+  - versions:
+      - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

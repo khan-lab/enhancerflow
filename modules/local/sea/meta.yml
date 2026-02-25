@@ -1,0 +1,71 @@
+name: sea
+description: Simple Enrichment Analysis (SEA) tests for enrichment of known motifs in sequences
+keywords:
+  - motif
+  - enrichment
+  - sea
+  - meme
+  - transcription factor
+  - enhancer
+tools:
+  - sea:
+      description: Tests for enrichment of known motifs in a set of sequences relative to a control set
+      homepage: https://meme-suite.org/meme/doc/sea.html
+      documentation: https://meme-suite.org/meme/doc/sea.html
+      tool_dev_url: https://github.com/durinck/meme
+      doi: "10.1093/nar/gkad335"
+      licence: ["Custom"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - sequences:
+        type: file
+        description: FASTA file containing primary sequences to test for motif enrichment
+        pattern: "*.{fa,fasta}"
+  - - motif_db:
+        type: file
+        description: Motif database file in MEME format
+        pattern: "*.meme"
+output:
+  - output_dir:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_sea/:
+            type: directory
+            description: Directory containing all SEA results
+  - tsv:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_sea/sea.tsv:
+            type: file
+            description: Tab-separated file of motif enrichment results
+            pattern: "sea.tsv"
+  - html:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_sea/sea.html:
+            type: file
+            description: HTML report of SEA results
+            pattern: "sea.html"
+  - versions:
+      - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

@@ -49,8 +49,8 @@ workflow ENHANCERFLOW {
     //
     // Prepare genome files
     //
-    ch_fasta = params.fasta ? Channel.fromPath(params.fasta) : Channel.value([])
-    ch_gtf   = params.gtf   ? Channel.fromPath(params.gtf)   : Channel.value([])
+    ch_fasta = params.fasta ? Channel.value(file(params.fasta, checkIfExists: true)) : Channel.value([])
+    ch_gtf   = params.gtf   ? Channel.value(file(params.gtf, checkIfExists: true))   : Channel.value([])
 
     //
     // SUBWORKFLOW: Super-Enhancer Calling with ROSE2
@@ -90,14 +90,21 @@ workflow ENHANCERFLOW {
     }
 
     //
-    // SUBWORKFLOW: Motif Analysis with HOMER
+    // Prepare motif database (default uses container-internal JASPAR path)
+    //
+    ch_motif_db = params.motif_db ? Channel.fromPath(params.motif_db, checkIfExists: true) : Channel.value([])
+
+    //
+    // SUBWORKFLOW: Motif Analysis with HOMER, FIMO, and SEA
     //
     if (!params.skip_motifs) {
         MOTIF_ANALYSIS (
             SUPERENHANCER_CALLING.out.ses,
             SUPERENHANCER_CALLING.out.ses_constituents,
+            SUPERENHANCER_CALLING.out.tes_constituents,
             ch_fasta,
             ch_gtf,
+            ch_motif_db,
             params.genome
         )
         ch_versions = ch_versions.mix(MOTIF_ANALYSIS.out.versions)

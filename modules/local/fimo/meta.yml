@@ -1,0 +1,70 @@
+name: fimo
+description: Find Individual Motif Occurrences (FIMO) scans sequences for matches to motifs
+keywords:
+  - motif
+  - fimo
+  - meme
+  - transcription factor
+  - enhancer
+tools:
+  - fimo:
+      description: Scans a set of sequences for individual matches to motifs from a motif database
+      homepage: https://meme-suite.org/meme/doc/fimo.html
+      documentation: https://meme-suite.org/meme/doc/fimo.html
+      tool_dev_url: https://github.com/durinck/meme
+      doi: "10.1093/bioinformatics/btr064"
+      licence: ["Custom"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - sequences:
+        type: file
+        description: FASTA file containing sequences to scan for motifs
+        pattern: "*.{fa,fasta}"
+  - - motif_db:
+        type: file
+        description: Motif database file in MEME format
+        pattern: "*.meme"
+output:
+  - output_dir:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_fimo/:
+            type: directory
+            description: Directory containing all FIMO results
+  - tsv:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_fimo/fimo.tsv:
+            type: file
+            description: Tab-separated file of motif occurrences
+            pattern: "fimo.tsv"
+  - html:
+      - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test' ]
+      - ${prefix}_fimo/fimo.html:
+            type: file
+            description: HTML report of FIMO results
+            pattern: "fimo.html"
+  - versions:
+      - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+authors:
+  - "@asntech"
+maintainers:
+  - "@asntech"

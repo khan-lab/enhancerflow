@@ -1,0 +1,3 @@
+sample,peaks,bam,control_bam,condition
+Test1,/Users/aziz.khan/Downloads/test.narrowPeak,/Users/aziz.khan/Downloads/test.paired_end.sorted.bam,/Users/aziz.khan/Downloads/test.paired_end.sorted.bam,WT
+Test2,/Users/aziz.khan/Downloads/test.narrowPeak,/Users/aziz.khan/Downloads/test.paired_end.sorted.bam,/Users/aziz.khan/Downloads/test.paired_end.sorted.bam,TREAT

@@ -28,7 +28,6 @@ process HOMER_FINDMOTIFSGENOME {
     def genome_ref = fasta ? "${fasta}" : "${genome}"
 
     """
-    mkdir -p ${prefix}/temp
     findMotifsGenome.pl \\
         ${peak_file} \\
         ${genome_ref} \\
