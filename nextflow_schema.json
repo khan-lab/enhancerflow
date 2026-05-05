@@ -132,6 +132,13 @@
                     "default": 100,
                     "description": "Extension length for stitching in bp",
                     "fa_icon": "fas fa-ruler-horizontal"
+                },
+                "rose2_flagstat_timeout": {
+                    "type": "integer",
+                    "default": 60,
+                    "description": "Override ROSE2's hard-coded 60s `samtools flagstat` timeout (seconds).",
+                    "help_text": "ROSE2 2.0.1 hard-codes a 60s timeout on the `samtools flagstat` call used to compute MMR. Large/deeply-sequenced control BAMs (~10 GB / >150M alignments) can exceed this and cause the parent ROSE2 process to hang at 'WAITING FOR MAPPING TO COMPLETE'. Increase as needed (e.g. 600).",
+                    "fa_icon": "fas fa-stopwatch"
                 }
             }
         },

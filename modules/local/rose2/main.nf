@@ -26,8 +26,20 @@ process ROSE2 {
     def stitch = params.stitch_distance ?: 12500
     def tss = params.tss_exclusion ?: 2500
     def custom_genome = params.custom_genome ? "--custom ${params.custom_genome}" : ""
+    def flagstat_timeout = params.rose2_flagstat_timeout ?: 60
 
     """
+    # rose2 2.0.1 hard-codes timeout=60 on the samtools flagstat subprocess.run
+    # call in rose2/utils.py. Shadow the package on PYTHONPATH with a patched
+    # copy so the override works on read-only container filesystems
+    # (Singularity/Apptainer) as well as Docker and conda. Children (bamToGFF
+    # workers) inherit PYTHONPATH and pick up the same patched module.
+    ROSE2_PKG_DIR=\$(python3 -c 'import os, rose2; print(os.path.dirname(rose2.__file__))')
+    mkdir -p rose2_override/rose2
+    cp -a "\$ROSE2_PKG_DIR"/. rose2_override/rose2/
+    sed -i 's/timeout=60)/timeout=${flagstat_timeout})/g' rose2_override/rose2/utils.py
+    export PYTHONPATH="\$PWD/rose2_override\${PYTHONPATH:+:\$PYTHONPATH}"
+
     rose2 main -g ${genome.toString().toUpperCase()} \\
         -i ${peaks} \\
         -r ${bam} \\
