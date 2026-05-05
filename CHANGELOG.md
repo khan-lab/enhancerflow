@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `--motif_db` parameter for custom motif database (defaults to JASPAR in MEME container)
 - DEEPTOOLS_BAMCOVERAGE step to convert BAMs to bigWigs before computeMatrix
 - Both SE and TE BED regions passed to computeMatrix
+- `--rose2_flagstat_timeout` parameter (default: 60s) to override ROSE2's hard-coded 60s `samtools flagstat` timeout in `rose2/utils.py`. Increase (e.g. `--rose2_flagstat_timeout 600`) for large/deeply-sequenced control BAMs (~10 GB / >150M alignments) where flagstat exceeds 60s and causes the parent ROSE2 process to hang at "WAITING FOR MAPPING TO COMPLETE" until the scheduler kills it. Implemented by shadowing `rose2/utils.py` on `PYTHONPATH` at task runtime, so it works on read-only container filesystems (Singularity/Apptainer) without rebuilding the rose2 container.
 
 ### `Fixed`
 
