@@ -26,7 +26,12 @@ process ROSE2 {
     def stitch = params.stitch_distance ?: 12500
     def tss = params.tss_exclusion ?: 2500
     def custom_genome = params.custom_genome ? "--custom ${params.custom_genome}" : ""
-    def flagstat_timeout = params.rose2_flagstat_timeout ?: 60
+    def raw_flagstat_timeout = params.rose2_flagstat_timeout ?: 60
+    def flagstat_timeout_str = raw_flagstat_timeout.toString()
+    if (!(flagstat_timeout_str ==~ /^\d+$/) || flagstat_timeout_str.toInteger() <= 0) {
+        error "Invalid value for params.rose2_flagstat_timeout: '${raw_flagstat_timeout}'. Expected a positive whole number."
+    }
+    def flagstat_timeout = flagstat_timeout_str.toInteger()
 
     """
     # rose2 2.0.1 hard-codes timeout=60 on the samtools flagstat subprocess.run
