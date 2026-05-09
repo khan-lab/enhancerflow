@@ -173,8 +173,8 @@
                     "default": 0.5,
                     "description": "Minimum reciprocal overlap fraction for intervene",
                     "help_text": "Fraction of each super-enhancer that must overlap for intervene analysis (0.0-1.0)",
-                    "minimum": 0.0,
-                    "maximum": 1.0
+                    "minimum": 0,
+                    "maximum": 1
                 }
             }
         },
@@ -355,5 +355,22 @@
         {
             "$ref": "#/$defs/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "skip_rose2": {
+            "type": "boolean"
+        },
+        "debug_meta": {
+            "type": "boolean"
+        },
+        "fai": {
+            "type": "string"
+        },
+        "gene_bed": {
+            "type": "string"
+        },
+        "blacklist": {
+            "type": "string"
+        }
+    }
 }
