@@ -8,6 +8,7 @@ use these files only in a test profile that **skips BAM-consuming steps**, or
 replace BAMs with real small BAMs.
 
 ## Files
+
 - `samplesheet.csv`
 - `contrastsheet_condition.csv`
 - `contrastsheet_longitudinal.csv`

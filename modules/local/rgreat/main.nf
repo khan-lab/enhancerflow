@@ -5,7 +5,7 @@ process RGREAT {
     conda "${moduleDir}/environment.yml"
 
     container 'ghcr.io/khan-lab/rgreat:sha-0893d90'
-    
+
     input:
     tuple val(meta), path(super_enhancers)
     val genome
@@ -21,7 +21,7 @@ process RGREAT {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    #Run rGREAT for GO:BP, GO:MF, GO:CC, MSigDB:H 
+    #Run rGREAT for GO:BP, GO:MF, GO:CC, MSigDB:H
 
     run_rgreat.sh \\
         --bed ${super_enhancers} \\
@@ -29,7 +29,7 @@ process RGREAT {
         --outdir ${prefix} \\
         --collection "GO:BP" \\
         --prefix ${prefix}
-    
+
     run_rgreat.sh \\
         --bed ${super_enhancers} \\
         --genome ${genome} \\

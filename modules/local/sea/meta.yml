@@ -33,38 +33,38 @@ input:
 output:
   - output_dir:
       - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. [ id:'test' ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - ${prefix}_sea/:
-            type: directory
-            description: Directory containing all SEA results
+          type: directory
+          description: Directory containing all SEA results
   - tsv:
       - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. [ id:'test' ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - ${prefix}_sea/sea.tsv:
-            type: file
-            description: Tab-separated file of motif enrichment results
-            pattern: "sea.tsv"
+          type: file
+          description: Tab-separated file of motif enrichment results
+          pattern: "sea.tsv"
   - html:
       - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. [ id:'test' ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - ${prefix}_sea/sea.html:
-            type: file
-            description: HTML report of SEA results
-            pattern: "sea.html"
+          type: file
+          description: HTML report of SEA results
+          pattern: "sea.html"
   - versions:
       - versions.yml:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@asntech"
 maintainers:

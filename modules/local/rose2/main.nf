@@ -3,7 +3,7 @@ process ROSE2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    
+
     container 'ghcr.io/khan-lab/rose:2.0.1'
 
     input:

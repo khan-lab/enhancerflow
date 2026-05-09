@@ -27,14 +27,14 @@ input:
 output:
   - summary:
       - ${prefix}_design_summary.tsv:
-            type: file
-            description: TSV file with design summary
-            pattern: "*_design_summary.tsv"
+          type: file
+          description: TSV file with design summary
+          pattern: "*_design_summary.tsv"
   - versions:
       - versions.yml:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@asntech"
 maintainers:

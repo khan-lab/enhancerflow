@@ -42,4 +42,3 @@ EOF
 for s in WT_T0_r1 WT_T0_r2 WT_T1_r1 KO_T0_r1 KO_T0_r2 KO_T1_r1 INPUT_shared; do
   make_bam "$s"
 done
-
