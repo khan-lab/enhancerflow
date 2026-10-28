@@ -4,7 +4,7 @@
 
 > An nf-core-based Nextflow pipeline for identifying and characterising enhancers and super-enhancers from aligned sequencing data.
 
-[![Nextflow](https://img.shields.io/badge/Nextflow-%E2%89%A525.04.0-0DC09D?logo=nextflow&logoColor=white)](https://www.nextflow.io/) [![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)](https://www.docker.com/) [![Conda](https://img.shields.io/badge/Conda-supported-44A833?logo=anaconda&logoColor=white)](https://conda.io/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Nextflow](https://img.shields.io/badge/Nextflow-%E2%89%A525.10.0-0DC09D?logo=nextflow&logoColor=white)](https://www.nextflow.io/) [![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)](https://www.docker.com/) [![Conda](https://img.shields.io/badge/Conda-supported-44A833?logo=anaconda&logoColor=white)](https://conda.io/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 The pipeline takes sample-level BAM files and peak calls as input. It calls super-enhancers with ROSE2 and can run downstream visualisation, motif analysis, cis-regulatory circuitry analysis, functional annotation, and comparisons between experimental conditions or time points. A MultiQC report and software-version summary are produced for each run.
 
@@ -24,7 +24,7 @@ Individual analysis steps can be disabled with the corresponding `--skip_*` para
 
 ## Requirements
 
-- Nextflow 25.04.0 or later
+- Nextflow 25.10.0 or later
 - Docker, Singularity, Apptainer, Conda, or another supported execution environment
 - Reference genome files, either through a configured iGenomes genome or explicit paths
 

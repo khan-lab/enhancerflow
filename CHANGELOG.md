@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed COMPARISON subworkflow name collision in bedtools merge (sort/merge meta.id remapping)
 - Added minimum sample guards in COMPARISON subworkflow (skip with <2 samples)
 - Guarded CRC_ANALYSIS to only run when fasta is provided
+- Fixed GENERATE_DESIGN_SUMMARY output referencing script-local `prefix`, which fails to compile with the Nextflow 26.04+ strict syntax parser
+- Bumped nf-schema to 2.7.3 so CLI boolean/integer parameters pass validation with the Nextflow 26.04+ syntax parser (minimum Nextflow is now 25.10.0)
 
 ### `Dependencies`
 

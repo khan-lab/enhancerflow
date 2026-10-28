@@ -11,8 +11,8 @@ process GENERATE_DESIGN_SUMMARY {
     tuple val(meta), val(case_sample_ids), val(control_sample_ids)
 
     output:
-    path "${prefix}_design_summary.tsv", emit: summary
-    path "versions.yml"                 , emit: versions
+    path "${meta.id}_design_summary.tsv", emit: summary
+    path "versions.yml"                  , emit: versions
 
     script:
     def prefix = meta.id
